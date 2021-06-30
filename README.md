@@ -1,5 +1,5 @@
 # k-means-clustering
-One of my academic projects.
+One of my academic projects in CUDA.
 
 The aim of the project was to implement K-means clustering algorithm using CUDA in two ways - in particular the stage of calculating new coordinates of centroids (centers of clusters).
 
