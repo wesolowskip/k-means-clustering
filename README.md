@@ -49,7 +49,7 @@ Gpu1 result with Gpu2 result comparison: true
 
 #### [10M-points](samples/sample-10M-points)
 
-This sample does not run CPU version because it would take unacceptable amount of time.
+This sample does not run CPU version because it would take an unacceptable amount of time.
 
 ```
 N=10000000 , n=3 , k=80 , threshold=1e-06
