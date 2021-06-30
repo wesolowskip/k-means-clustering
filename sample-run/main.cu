@@ -4,11 +4,11 @@
 #include <utility>  //std::pair
 #include <cmath>
 #include <thrust/host_vector.h>
+#include <chrono>
 
 #include "k_means_cpu.hpp"
 #include "k_means_gpu_1.cuh"
 #include "k_means_gpu_2.cuh"
-#include "Stopwatch.h"
 
 using namespace std;
 
@@ -31,6 +31,14 @@ bool compare_cpu_gpu_results(const pair<thrust::host_vector<double>, thrust::hos
 bool compare_gpu_results(const pair<thrust::host_vector<double>, thrust::host_vector<int>>& gpu_result_1,
                          const pair<thrust::host_vector<double>, thrust::host_vector<int>>& result2);
 
+#define START_STOPWATCH {\
+                        auto begin = chrono::high_resolution_clock::now();
+#define STOP_STOPWATCH auto end = chrono::high_resolution_clock::now();\
+                        auto dur = end - begin;\
+                        auto ms = chrono::duration_cast<chrono::milliseconds>(dur).count();\
+                        auto us = chrono::duration_cast<chrono::microseconds>(dur).count() - ms*1000;\
+                        cout << "Measured time: " << ms << "ms" << " " << us << "us\n";    \
+                        }
 int main()
 {
     unsigned seed = (unsigned)time(NULL);
@@ -40,19 +48,19 @@ int main()
     double threshold;
     auto input_pair = generate_sample_input(N, n, k, threshold);
     cout << "\nN=" << N << " , n=" << n << " , k=" << k << " , threshold=" << threshold << endl;
-    Stopwatch t;
+    pair<thrust::host_vector<double>, thrust::host_vector<int>> cpu_result, gpu_result1, gpu_result2;
     cout << "\nk_means_gpu_1::Compute:\n";
-    t.start("Measured time:");
-    auto gpu_result1 = k_means_gpu_1::Compute(input_pair.second.begin(), N, n, k, threshold);
-    t.stop();
+    START_STOPWATCH
+    gpu_result1 = k_means_gpu_1::Compute(input_pair.second.begin(), N, n, k, threshold);
+    STOP_STOPWATCH
     cout << "\nk_means_gpu_2::Compute:\n";
-    t.start("Measured time:");
-    auto gpu_result2 = k_means_gpu_2::Compute(input_pair.second.begin(), N, n, k, threshold);
-    t.stop();
+    START_STOPWATCH
+    gpu_result2 = k_means_gpu_2::Compute(input_pair.second.begin(), N, n, k, threshold);
+    STOP_STOPWATCH
     cout << "\nk_means_cpu::Compute:\n";
-    t.start("Measured time:");
-    auto cpu_result = k_means_cpu::Compute(input_pair.first.begin(), N, n, k, threshold);
-    t.stop();
+    START_STOPWATCH
+    cpu_result = k_means_cpu::Compute(input_pair.first.begin(), N, n, k, threshold);
+    STOP_STOPWATCH
     cout << endl;
 	cout << boolalpha << "Cpu result with Gpu1 comparison: " << compare_cpu_gpu_results(cpu_result, gpu_result1, n, k)
 	    << endl;
@@ -63,7 +71,7 @@ int main()
 
 class DoubleComparer
 {
-    static constexpr double precision = 1e-3;
+    static constexpr double precision = 1e-6;
 public:
     __host__ __device__
     bool operator()(double x, double y)
