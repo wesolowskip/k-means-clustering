@@ -38,7 +38,7 @@ int main()
     cpu_result = k_means_cpu::Compute(input_pair.first.begin(), N, n, k, threshold);
     STOP_STOPWATCH
     cout << endl;
-	cout << boolalpha << "Cpu result with Gpu1 comparison: " << compare_cpu_gpu_results(cpu_result, gpu_result1, n, k)
+	cout << boolalpha << "Cpu result with Gpu1 result comparison: " << compare_cpu_gpu_results(cpu_result, gpu_result1, n, k)
 	    << endl;
     cout << boolalpha << "Gpu1 result with Gpu2 result comparison: " << compare_gpu_results(gpu_result1, gpu_result2)
         << endl;

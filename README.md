@@ -11,9 +11,52 @@ Directory [k-means-clustering](k-means-clustering) contains three implementation
 
 ## Input of the algorithm
 
-- random set of `N` points (millions) in `n`-dimensional space (`n` is small, not greater than 15 in my implementation),
+- random set of `N` points (millions) in `n`-dimensional space (`n` should be small, not greater than 15 in my implementation),
 - `k` - requested number of clusters, up to several dozen,
 - `threshold` - see http://users.eecs.northwestern.edu/~wkliao/Kmeans/index.html.
+
+## Basic example of use
+
+```cpp
+//Suppose we have 4 points in 2-dimensional space with coordinates
+//  (100, 50), (0, 0), (-20, -7), (-10, 9).
+//We want to spit them into 3 clusters.
+//We create arrays for cpu and gpu k-means implementations.
+//Note different order of items.
+double cpu_data[8] = { 
+    100, 50,
+      0,  0,
+    -20, -7,
+    -10,  9
+};
+double gpu_data[8] = {
+    100, 0, -20, -10,
+     50, 0,  -7,   9
+};
+
+//Now we can run k-means clustering. 
+//Of course cpu_data and gpu_data are iterators. The last argument is threshold.
+//Results are of type pair<thrust::host_vector<double>, thrust::host_vector<int>>
+auto cpu_res = k_means_cpu::Compute(cpu_data, 4, 2, 3, 0.1);
+auto gpu_res_1 = k_means_gpu_1::Compute(gpu_data, 4, 2, 3, 0.1);
+auto gpu_res_2 = k_means_gpu_2::Compute(gpu_data, 4, 2, 3, 0.1);
+
+//Printing consecutive items of cpu_res.first would give us:
+//  100, 50, -5, 4.5, -20, -7
+//and printing gpu_res_1.first or gpu_res_2.first would give us:
+//  100, -5, -20, 50, 4.5, -7.
+//Note that order of coordinates for these results is same as order of
+//coordinates of input points in corresponding functions.
+//In particular calculated centroids (clusters' centers) are:
+//  (100, 50), (-5, 4.5), (-20, -7).
+//Printing any of cpu_res.second, gpu_res_1.second or gpu_res_2.second
+//vectors would give us:
+//  0, 1, 2, 1
+//and it means that first input point was assigned to 0th centroid (100, 50),
+//second and fourth input point were assigned to 1st centroid (-5, 4.5)
+//and third point was assigned to 2nd centroid (-20, -7).
+```
+
 
 ## Samples
 
@@ -29,7 +72,7 @@ If you are not using provided `CMakeLists.txt` (for example you want to compile 
 
 On the test setup (i7 4790k, GTX960 4GB) running provided samples gave the following results:
 
-#### [200K-points](samples/sample-200K-points)
+#### [200K points](samples/sample-200K-points)
 
 ```
 N=200000 , n=3 , k=60 , threshold=0.0001
@@ -43,11 +86,11 @@ Measured time: 125ms 375us
 k_means_cpu::Compute:
 Measured time: 142737ms 19us
 
-Cpu result with Gpu1 comparison: true
+Cpu result with Gpu1 result comparison: true
 Gpu1 result with Gpu2 result comparison: true
 ```
 
-#### [10M-points](samples/sample-10M-points)
+#### [10M points](samples/sample-10M-points)
 
 This sample does not run CPU version because it would take an unacceptable amount of time.
 
