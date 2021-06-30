@@ -51,9 +51,9 @@ auto gpu_res_2 = k_means_gpu_2::Compute(gpu_data, 4, 2, 3, 0.1);
 //  (100, 50), (-5, 4.5), (-20, -7).
 //All three vectors cpu_res.second, gpu_res_1.second and gpu_res_2.second are:
 //  0, 1, 2, 1
-//and it means that first input point was assigned to 0th centroid (100, 50),
-//second and fourth input point were assigned to 1st centroid (-5, 4.5)
-//and third point was assigned to 2nd centroid (-20, -7).
+//and it means that first input point has been assigned to 0th centroid (100, 50),
+//second and fourth input point have been assigned to 1st centroid (-5, 4.5)
+//and third point has been assigned to 2nd centroid (-20, -7).
 ```
 
 
