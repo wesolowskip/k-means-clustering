@@ -34,8 +34,7 @@ bool compare_gpu_results(const pair<thrust::host_vector<double>, thrust::host_ve
 int main()
 {
     unsigned seed = (unsigned)time(NULL);
-    seed = 1625060827;
-    srand(seed);  //Potem usun
+    srand(seed);
     cout << "Seed for srand: " << seed << endl;
     int N, n, k;
     double threshold;
