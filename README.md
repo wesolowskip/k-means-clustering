@@ -22,7 +22,7 @@ Directory [k-means-clustering](k-means-clustering) contains three implementation
 //  (100, 50), (0, 0), (-20, -7), (-10, 9).
 //We want to spit them into 3 clusters.
 //We create arrays for cpu and gpu k-means implementations.
-//Note different order of items.
+//Notice different order of items.
 double cpu_data[8] = { 
     100, 50,
       0,  0,
@@ -35,22 +35,21 @@ double gpu_data[8] = {
 };
 
 //Now we can run k-means clustering. 
-//Of course cpu_data and gpu_data are iterators. The last argument is threshold.
+//Of course cpu_data and gpu_data are also iterators. The last argument is threshold.
 //Results are of type pair<thrust::host_vector<double>, thrust::host_vector<int>>
 auto cpu_res = k_means_cpu::Compute(cpu_data, 4, 2, 3, 0.1);
 auto gpu_res_1 = k_means_gpu_1::Compute(gpu_data, 4, 2, 3, 0.1);
 auto gpu_res_2 = k_means_gpu_2::Compute(gpu_data, 4, 2, 3, 0.1);
 
-//Printing consecutive items of cpu_res.first would give us:
+//Now cpu_res.first is:
 //  100, 50, -5, 4.5, -20, -7
-//and printing gpu_res_1.first or gpu_res_2.first would give us:
+//and both gpu_res_1.first and gpu_res_2.first are:
 //  100, -5, -20, 50, 4.5, -7.
 //Note that order of coordinates for these results is same as order of
 //coordinates of input points in corresponding functions.
-//In particular calculated centroids (clusters' centers) are:
+//In particular calculated centroids (centers of clusters) are:
 //  (100, 50), (-5, 4.5), (-20, -7).
-//Printing any of cpu_res.second, gpu_res_1.second or gpu_res_2.second
-//vectors would give us:
+//All three vectors cpu_res.second, gpu_res_1.second and gpu_res_2.second are:
 //  0, 1, 2, 1
 //and it means that first input point was assigned to 0th centroid (100, 50),
 //second and fourth input point were assigned to 1st centroid (-5, 4.5)
