@@ -67,7 +67,7 @@ For the sample you want you can generate appropiate `Makefile` using `cmake .` c
 
 If you are not using provided `CMakeLists.txt` (for example you want to compile a sample in MS VS) remember to set proper include directories or to change headers in `#include` in samples' source files to relative paths.
 
-## Example output:
+## Example output of samples
 
 On the test setup (i7 4790k, GTX960 4GB) running provided samples gave the following results:
 
