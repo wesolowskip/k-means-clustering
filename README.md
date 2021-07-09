@@ -22,7 +22,7 @@ Directory [k-means-clustering](k-means-clustering) contains three implementation
 //  (100, 50), (0, 0), (-20, -7), (-10, 9).
 //We want to spit them into 3 clusters.
 //We create arrays for cpu and gpu k-means implementations.
-//Notice different order of items.
+//Notice the different order of items.
 double cpu_data[8] = { 
     100, 50,
       0,  0,
@@ -65,7 +65,7 @@ The samples use `generate_sample_input` function from [samples utils](samples/co
 As for now, there are two samples: [sample-200K-points](samples/sample-200K-points) and [sample-10M-points](sample-10M-points).
 For the sample you want you can generate appropiate `Makefile` using `cmake .` command (`CMakeLists.txt` are provided for samples) and then build the executable using `make` command.
 
-If you are not using provided `CMakeLists.txt` (for example you want to compile a sample in MS VS) remember to set proper include directories or to change headers in `#include` in samples' source files to relative paths.
+If you are not using provided `CMakeLists.txt` (for example you want to compile a sample in MS VS) remember to set proper additional include directories path or to change headers in `#include` in samples' source files to relative paths.
 
 ## Example output of samples
 
@@ -91,7 +91,7 @@ Gpu1 result with Gpu2 result comparison: true
 
 #### [10M points](samples/sample-10M-points)
 
-This sample does not run CPU version because it would take an unacceptable amount of time.
+This sample does not run the CPU version because it would take an unacceptable amount of time.
 
 ```
 N=10000000 , n=3 , k=80 , threshold=1e-06
